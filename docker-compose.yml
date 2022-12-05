@@ -1,0 +1,24 @@
+version: '2'
+
+services:
+  mariadb:
+    image: mariadb:10.6
+    environment:
+      - MARIADB_USER=superuser
+      - MARIADB_DATABASE=app_database
+      - MARIADB_PASSWORD=superpassword
+      - MARIADB_RANDOM_ROOT_PASSWORD=yes
+  myapp:
+    image: docker.io/bitnami/laravel:9
+    ports:
+      - '8000:8000'
+    environment:
+      - DB_HOST=mariadb
+      - DB_PORT=3306
+      - DB_USERNAME=superuser
+      - DB_DATABASE=app_database
+      - DB_PASSWORD=superpassword
+    volumes:
+      - './app:/app'
+    depends_on:
+      - mariadb
